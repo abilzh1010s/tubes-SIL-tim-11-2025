@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rumah Sakit Abdul Moeloek</title>
+    <style>
+        /* Mengimpor font dari Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap');
+
+        /* Palet Warna Coklat Tua - Krem */
+        :root {
+            --cream: #f9f6f0; /* krem */
+            --brown-light: #e0d4c0; /* coklat muda */
+            --brown-medium: #a8947f; /* coklat medium */
+            --brown-dark: #6e5e4e; /* coklat tua */
+            --brown-darker: #4a3e35; /* coklat lebih tua */
+            --text-color: #3a3a3a; /* abu gelap untuk teks */
+            --white: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset & Base */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Mengubah font di seluruh body menjadi Poppins */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cream);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Menggunakan Montserrat untuk judul */
+        h1, h2, h3, h4, .marquee-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Logo & Header */
+        .logo-container {
+            background-color: white;
+            padding: 1rem 1rem 0.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        .logo-container img {
+            max-height: 80px;
+            width: auto;
+            display: inline-block;
+        }
+
+        /* Header dengan teks berjalan */
+        header.header {
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            background-color: var(--brown-medium);
+            color: var(--white);
+            padding: 1.5rem 0;
+            position: relative;
+            font-size: 2.25rem;
+        }
+
+        header.header .marquee-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Navigasi */
+        nav.navigation-bar {
+            background-color: var(--brown-dark);
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        nav.navigation-bar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav.navigation-bar li {
+            margin: 0;
+        }
+
+        nav.navigation-bar li a {
+            display: block;
+            padding: 1rem 1.75rem;
+            font-weight: 600;
+            color: var(--cream);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        nav.navigation-bar li a:hover,
+        nav.navigation-bar li a:focus {
+            background-color: var(--brown-light);
+            color: var(--brown-darker);
+            border-bottom: 3px solid var(--brown-darker);
+        }
+
+        /* Konten Utama */
+        main.content-section {
+            max-width: 900px;
+            margin: 2rem auto 3rem;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 6px 12px var(--shadow-color);
+            margin-bottom: 2rem;
+            object-fit: cover;
+        }
+
+        .visi-misi {
+            background-color: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 6px 12px var(--shadow-color);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .visi-misi h4 {
+            color: var(--brown-darker);
+            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+        }
+
+        .visi-misi p {
+            font-size: 1.1rem;
+            color: var(--brown-dark);
+            margin-top: 0;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .separator {
+            width: 60px;
+            height: 4px;
+            background-color: var(--brown-medium);
+            margin: 1.5rem auto 2rem;
+            border-radius: 2px;
+        }
+
+        /* Tentang Kami */
+        section.tentang-kami {
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            background-color: var(--white);
+            padding: 2rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 6px 12px var(--shadow-color);
+            text-align: left;
+            color: var(--brown-dark);
+        }
+
+        section.tentang-kami h2 {
+            color: var(--brown-darker);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        section.tentang-kami p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Kontak */
+        footer.kontak {
+            background-color: var(--brown-medium);
+            color: var(--white);
+            padding: 2rem 1rem;
+            text-align: center;
+            font-size: 1rem;
+            box-shadow: 0 -4px 6px var(--shadow-color);
+        }
+
+        footer.kontak h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        footer.kontak p {
+            margin: 0.3rem 0;
+            line-height: 1.4;
+        }
+
+        footer.kontak a {
+            color: var(--brown-light);
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            nav.navigation-bar ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav.navigation-bar li a {
+                padding: 0.75rem 1.25rem;
+            }
+
+            main.content-section,
+            section.tentang-kami {
+                padding: 1rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <img src="logorsudam.jpg" alt="Logo Rumah Sakit Abdul Moeloek" />
+    </div>
+
+    <header class="header" aria-label="Selamat Datang">
+        <div class="marquee-text">Selamat Datang di Rumah Sakit Abdul Moeloek</div>
+    </header>
+
+    <nav class="navigation-bar" aria-label="Main navigation">
+        <ul>
+            <li><a href="index2.html">Home</a></li>
+            <li><a href="jadwal_dokter.html">Jadwal Dokter</a></li>
+            <li><a href="data_pasien2.html">Data Pasien</a></li>
+            <li><a href="data_hasil_lab2.html">Data Hasil Lab</a></li>
+            <li><a href="#tentang-kami">Tentang Kami</a></li>
+        </ul>
+    </nav>
+
+    <main class="content-section">
+        <img src="Gambar Rumah Sakit.jpg" alt="Foto Rumah Sakit Abdul Moeloek" class="hero-image" />
+
+        <div class="visi-misi" aria-labelledby="visi-title misi-title motto-title">
+            <h4 id="visi-title">Visi</h4>
+            <p>"Rumah Sakit Unggul dalam Pelayanan Pendidikan dan Penelitian Kesehatan di Sumatera"
+            </p>
+            <div class="separator"></div>
+            <h4 id="misi-title">Misi</h4>
+            <p>Menyelenggarakan Pelayanan Kesehatan yang Bermutu Profesional dengan Mengutamakan Keselamatan Pasien serta Menyelenggarakan Proses Pendidikan dan Penelitian yang Mengarah pada Pengembangan Ilmu dan Teknologi di Bidang Kedokteran dan Perumahsakitan yang Menunjang Pelayanan Kesehatan Prima Berdasar Standar Nasional dan Internasional.
+            </p>
+            <div class="separator"></div>
+            <h4 id="motto-title">Motto</h4>
+            <p>"Melayani Dengan Hati"
+            </p>
+        </div>
+
+        <section class="tentang-kami" id="tentang-kami" aria-labelledby="tentang-kami-title">
+            <h2 id="tentang-kami-title">Tentang Kami</h2>
+            <p>Rumah Sakit Abdul Moeloek berdiri dengan komitmen memberikan pelayanan kesehatan terbaik bagi masyarakat. Kami mengutamakan kualitas, inovasi, dan kepedulian dalam setiap layanan medis yang kami berikan. Dengan tenaga medis profesional dan fasilitas modern, kami siap menjadi mitra kesehatan Anda.</p>
+        </section>
+    </main>
+
+    <footer class="kontak" aria-label="Kontak Rumah Sakit">
+        <h3>Kontak Rumah Sakit Abdul Moeloek</h3>
+        <p>Alamat: Jalan Dr. Rivai, No.06, Penengahan, Kec. Tanjungkarang Pusat, Kota Bandar Lampung, Lampung</p>
+        <p>Telepon: (0721) 703312, 702455</p>
+        <p>Email: humasrsudam23@gmail.com / rsudam@lampungprov.go.id</p>
+        <p>Website: <a href="https://www.rsabdulmoeloek.co.id" target="_blank" rel="noopener" style="color: white;">www.rsabdulmoeloek.co.id</a></p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jadwal Dokter - Rumah Sakit Abdul Moeloek</title>
+    <style>
+        /* Mengimpor font dari Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap');
+
+        /* Palet Warna Coklat Tua - Krem */
+        :root {
+            --cream: #f9f6f0; /* krem */
+            --brown-light: #e0d4c0; /* coklat muda */
+            --brown-medium: #a8947f; /* coklat medium */
+            --brown-dark: #6e5e4e; /* coklat tua */
+            --brown-darker: #4a3e35; /* coklat lebih tua */
+            --text-color: #3a3a3a; /* abu gelap untuk teks */
+            --white: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset & Base */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cream);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        h1, h2, h3, h4, .marquee-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Logo & Header */
+        .logo-container {
+            background-color: white;
+            padding: 1rem 1rem 0.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        .logo-container img {
+            max-height: 80px;
+            width: auto;
+            display: inline-block;
+        }
+
+        header.header {
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            background-color: var(--brown-medium);
+            color: var(--white);
+            padding: 1.5rem 0;
+            position: relative;
+            font-size: 2.25rem;
+        }
+
+        header.header .marquee-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Navigasi */
+        nav.navigation-bar {
+            background-color: var(--brown-dark);
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        nav.navigation-bar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav.navigation-bar li {
+            margin: 0;
+        }
+
+        nav.navigation-bar li a {
+            display: block;
+            padding: 1rem 1.75rem;
+            font-weight: 600;
+            color: var(--cream);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        nav.navigation-bar li a:hover,
+        nav.navigation-bar li a:focus,
+        nav.navigation-bar li a.active {
+            background-color: var(--brown-light);
+            color: var(--brown-darker);
+            border-bottom: 3px solid var(--brown-darker);
+        }
+
+        /* Kontrol Pencarian & Filter */
+        .controls-bar {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          align-items: center;
+          justify-content: space-between;
+          background: var(--cream);
+          border: 1px solid var(--brown-light);
+          border-radius: 12px;
+          padding: 0.75rem 1rem;
+          box-shadow: 0 2px 4px var(--shadow-color);
+          position: sticky;
+          top: 0.5rem;
+          z-index: 2;
+        }
+
+        .search-input {
+          flex: 1 1 260px;
+          min-width: 220px;
+          padding: 0.6rem 0.8rem;
+          background: var(--white);
+          color: var(--text-color);
+          border: 1px solid var(--brown-light);
+          border-radius: 10px;
+          outline: none;
+          transition: box-shadow 0.2s ease, transform 0.08s ease;
+        }
+        .search-input:focus-visible {
+          box-shadow: 0 0 0 3px rgba(168, 148, 127, 0.25);
+          transform: translateY(-1px);
+        }
+
+        .chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+
+        .chip {
+          appearance: none;
+          border: 1px solid var(--brown-light);
+          background: var(--brown-light);
+          color: var(--brown-darker);
+          font-weight: 600;
+          padding: 0.35rem 0.75rem;
+          border-radius: 999px;
+          cursor: pointer;
+          transition: background-color 0.2s ease, color 0.2s ease, transform 0.08s ease;
+        }
+        .chip:hover,
+        .chip:focus-visible {
+          background: var(--brown-medium);
+          color: var(--white);
+          outline: none;
+        }
+        .chip.active {
+          background: var(--brown-medium);
+          color: var(--white);
+          border-color: var(--brown-medium);
+        }
+
+        .controls-inline {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: var(--brown-darker);
+          font-weight: 600;
+          white-space: nowrap;
+        }
+
+        .stats {
+          display: block;
+          margin-top: 0.75rem;
+          font-size: 0.95rem;
+          color: var(--brown-dark);
+          text-align: left;
+        }
+
+        .empty-state {
+          display: none;
+          margin-top: 1.25rem;
+          padding: 1rem;
+          border-radius: 12px;
+          border: 2px dashed var(--brown-light);
+          background: var(--cream);
+          color: var(--brown-darker);
+          font-weight: 600;
+        }
+
+        /* Mikro-interaksi tambahan */
+        .timeline-content {
+          will-change: transform, box-shadow, background-color;
+        }
+        .jadwal-tag {
+          transform: translateY(0);
+          will-change: transform, background-color, color;
+        }
+        .jadwal-tag:hover {
+          transform: translateY(-1px);
+        }
+
+        /* Responsif kecil untuk bar kontrol */
+        @media (max-width: 768px) {
+          .controls-bar {
+            position: static;
+          }
+          .controls-inline {
+            width: 100%;
+            justify-content: center;
+          }
+          .stats {
+            text-align: center;
+          }
+        }
+
+        /* Konten Jadwal Dokter */
+        main.content-section {
+            max-width: 1100px;
+            margin: 2rem auto 3rem;
+            padding: 0 1rem;
+            text-align: center;
+        }
+        
+        .schedule-container {
+            background-color: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 6px 12px var(--shadow-color);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .schedule-container::before {
+            content: '🩺';
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            font-size: 3rem;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .schedule-container h2 {
+            color: var(--brown-darker);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Layout Baru: Timeline-style List dengan Animasi Staggered */
+        .schedule-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            list-style: none;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .schedule-timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--brown-light), var(--brown-medium));
+            z-index: 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            padding-left: 2.5rem;
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+        .timeline-item:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background-color: var(--brown-medium);
+            border-radius: 50%;
+            border: 3px solid var(--white);
+            box-shadow: 0 2px 4px var(--shadow-color);
+            z-index: 1;
+        }
+
+        .timeline-content {
+            background-color: var(--cream);
+            border: 1px solid var(--brown-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            flex: 1;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px var(--shadow-color);
+            background-color: var(--white);
+        }
+
+        .poliklinik {
+            font-weight: 600;
+            color: var(--brown-darker);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .poliklinik::before {
+            font-size: 1.3rem;
+        }
+
+        /* Ikon spesifik per poliklinik menggunakan emoji */
+        .poliklinik.dalam::before { content: '🫁'; }
+        .poliklinik.anak::before { content: '👶'; }
+        .poliklinik.bedah::before { content: '🩹'; }
+        .poliklinik.gigi::before { content: '🦷'; }
+        .poliklinik.kandungan::before { content: '🤰'; }
+
+        .nama-dokter {
+            color: var(--brown-dark);
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+            border-left: 3px solid var(--brown-light);
+        }
+
+        .jadwal-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .jadwal-tag {
+            background-color: var(--brown-light);
+            color: var(--brown-darker);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .jadwal-tag:hover {
+            background-color: var(--brown-medium);
+            color: var(--white);
+        }
+
+        .jadwal-tag::before {
+            content: '📅';
+            font-size: 0.8rem;
+        }
+
+        /* Kontak */
+        footer.kontak {
+            background-color: var(--brown-medium);
+            color: var(--white);
+            padding: 2rem 1rem;
+            text-align: center;
+            font-size: 1rem;
+            box-shadow: 0 -4px 6px var(--shadow-color);
+        }
+
+        footer.kontak h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        footer.kontak p {
+            margin: 0.3rem 0;
+            line-height: 1.4;
+        }
+
+        footer.kontak a {
+            color: var(--brown-light);
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            nav.navigation-bar ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav.navigation-bar li a {
+                padding: 0.75rem 1.25rem;
+            }
+
+            main.content-section {
+                padding: 1rem;
+            }
+
+            .schedule-timeline::before {
+                left: 15px;
+            }
+
+            .timeline-item {
+                padding-left: 2rem;
+            }
+
+            .timeline-dot {
+                top: 0.75rem;
+                width: 10px;
+                height: 10px;
+            }
+
+            .timeline-content {
+                padding: 1.25rem;
+            }
+
+            .jadwal-container {
+                justify-content: flex-start;
+            }
+
+            .jadwal-tag {
+                flex: 1 1 100%;
+                justify-content: center;
+                margin-bottom: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <img src="logorsudam.jpg" alt="Logo Rumah Sakit Abdul Moeloek" />
+    </div>
+
+    <header class="header" aria-label="Selamat Datang">
+        <div class="marquee-text">Selamat Datang di Rumah Sakit Abdul Moeloek</div>
+    </header>
+
+    <nav class="navigation-bar" aria-label="Main navigation">
+        <ul>
+            <li><a href="index2.html">Home</a></li>
+            <li><a href="jadwal_dokter.html" class="active">Jadwal Dokter</a></li>
+            <li><a href="data_pasien2.html">Data Pasien</a></li>
+            <li><a href="data_hasil_lab2.html">Data Hasil Lab</a></li>
+            <li><a href="index2.html#tentang-kami">Tentang Kami</a></li>
+        </ul>
+    </nav>
+
+    <main class="content-section">
+        <div class="schedule-container">
+            <h2>Jadwal Dokter</h2>
+            <div class="controls-bar" role="region" aria-label="Kontrol pencarian dan filter jadwal dokter">
+              <input
+                type="search"
+                class="search-input"
+                id="search"
+                placeholder="Cari dokter atau poliklinik..."
+                aria-label="Cari dokter atau poliklinik"
+              />
+              <div class="chips" role="tablist" aria-label="Filter hari praktik">
+                <button class="chip active" role="tab" aria-selected="true" data-day="all">Semua</button>
+                <button class="chip" role="tab" aria-selected="false" data-day="senin">Senin</button>
+                <button class="chip" role="tab" aria-selected="false" data-day="selasa">Selasa</button>
+                <button class="chip" role="tab" aria-selected="false" data-day="rabu">Rabu</button>
+                <button class="chip" role="tab" aria-selected="false" data-day="kamis">Kamis</button>
+                <button class="chip" role="tab" aria-selected="false" data-day="jumat">Jumat</button>
+                <button class="chip" role="tab" aria-selected="false" data-day="sabtu">Sabtu</button>
+              </div>
+              <label class="controls-inline">
+                <input type="checkbox" id="todayOnly" />
+                <span>Hari ini saja</span>
+              </label>
+            </div>
+            <small class="stats" aria-live="polite">Menampilkan 0 dari 0 dokter</small>
+            <ul class="schedule-timeline" id="scheduleList">
+                <li class="timeline-item" data-poliklinik="penyakit dalam" data-dokter="dr. mardi waluyo, Sp.PD" data-hari="senin,rabu,jumat">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="poliklinik dalam">Penyakit Dalam</div>
+                        <div class="nama-dokter">dr. Mardi Waluyo, Sp.PD</div>
+                        <div class="jadwal-container">
+                            <span class="jadwal-tag">Senin (09.00 - 15.00)</span>
+                            <span class="jadwal-tag">Rabu (09.00 - 15.00)</span>
+                            <span class="jadwal-tag">Jumat (09.00 - 15.00)</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-item" data-poliklinik="anak" data-dokter="dr. puan maharani, Sp.A" data-hari="selasa,kamis">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="poliklinik anak">Anak</div>
+                        <div class="nama-dokter">dr. Puan Maharani, Sp.A</div>
+                        <div class="jadwal-container">
+                            <span class="jadwal-tag">Selasa (08.00 - 14.00)</span>
+                            <span class="jadwal-tag">Jum'at (08.00 - 14.00)</span>
+                            <span class="jadwal-tag">Sabtu (08.00 - 14.00)</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-item" data-poliklinik="bedah umum" data-dokter="dr. sri indra, Sp.B" data-hari="senin,selasa,kamis">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="poliklinik bedah">Bedah Umum</div>
+                        <div class="nama-dokter">dr. Sri Indra, Sp.B</div>
+                        <div class="jadwal-container">
+                            <span class="jadwal-tag">Senin (10.00 - 16.00)</span>
+                            <span class="jadwal-tag">Selasa (10.00 - 16.00)</span>
+                            <span class="jadwal-tag">Kamis (10.00 - 16.00)</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-item" data-poliklinik="gigi & mulut" data-dokter="drg. lucia rizka" data-hari="rabu,jumat">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="poliklinik gigi">Gigi & Mulut</div>
+                        <div class="nama-dokter">drg. Lucia Rizka</div>
+                        <div class="jadwal-container">
+                            <span class="jadwal-tag">Rabu (11.00 - 17.00)</span>
+                            <span class="jadwal-tag">Jumat (11.00 - 17.00)</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-item" data-poliklinik="kandungan" data-dokter="dr. maria endang, Sp.OG" data-hari="selasa,kamis,sabtu">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="poliklinik kandungan">Kandungan</div>
+                        <div class="nama-dokter">dr. Maria Endang, Sp.OG</div>
+                        <div class="jadwal-container">
+                            <span class="jadwal-tag">Selasa (09.00 - 15.00)</span>
+                            <span class="jadwal-tag">Kamis (09.00 - 15.00)</span>
+                            <span class="jadwal-tag">Sabtu (09.00 - 15.00)</span>
+                        </div>
+                    </div>
+                </li>
+  <li class="timeline-item" data-poliklinik="mata" data-dokter="dr. Kazana Reila, Sp.KJ" data-hari="senin,kamis">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <div class="poliklinik">Kejiwaan</div>
+      <div class="nama-dokter">dr. Kazana Reila, Sp.KJ</div>
+      <div class="jadwal-container">
+        <span class="jadwal-tag">Senin (08.00 - 12.00)</span>
+        <span class="jadwal-tag">Kamis (13.00 - 16.00)</span>
+      </div>
+    </div>
+  </li>
+
+  <li class="timeline-item" data-poliklinik="tht" data-dokter="dr. Mashilla Putri Juwita, Sp.THT.KL" data-hari="selasa,jumat">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <div class="poliklinik">THT</div>
+      <div class="nama-dokter">dr. Mashilla Putri Juwita, Sp.THT.KL</div>
+      <div class="jadwal-container">
+        <span class="jadwal-tag">Selasa (09.00 - 13.00)</span>
+        <span class="jadwal-tag">Jumat (10.00 - 14.00)</span>
+      </div>
+    </div>
+  </li>
+
+  <li class="timeline-item" data-poliklinik="orthopedi" data-dokter="dr. Bima Naputra Rizal, Sp.OT" data-hari="rabu,sabtu">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <div class="poliklinik">Orthopedi</div>
+      <div class="nama-dokter">dr. Bima Naputra Rizal, Sp.OT</div>
+      <div class="jadwal-container">
+        <span class="jadwal-tag">Rabu (11.00 - 15.00)</span>
+        <span class="jadwal-tag">Sabtu (09.00 - 12.00)</span>
+      </div>
+    </div>
+  </li>
+
+  <li class="timeline-item" data-poliklinik="saraf" data-dokter="dr. Arkananta Samudra, Sp.N" data-hari="senin,rabu">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <div class="poliklinik">Saraf</div>
+      <div class="nama-dokter">dr. Arkananta Samudra, Sp.N</div>
+      <div class="jadwal-container">
+        <span class="jadwal-tag">Senin (13.00 - 17.00)</span>
+        <span class="jadwal-tag">Rabu (08.00 - 12.00)</span>
+      </div>
+    </div>
+  </li>
+
+  <li class="timeline-item" data-poliklinik="kulit & kelamin" data-dokter="dr. Katarina Situmeang, Sp.KK" data-hari="kamis,sabtu">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <div class="poliklinik">Kulit & Kelamin</div>
+      <div class="nama-dokter">dr. Katarina Situmeang, Sp.KK</div>
+      <div class="jadwal-container">
+        <span class="jadwal-tag">Kamis (10.00 - 14.00)</span>
+        <span class="jadwal-tag">Sabtu (10.00 - 13.00)</span>
+      </div>
+    </div>
+  </li>
+            </ul>
+            <div class="empty-state" id="emptyState" role="status" aria-live="polite">
+              Tidak ada jadwal yang cocok dengan pencarian/filter.
+            </div>
+        </div>
+    </main>
+
+    <footer class="kontak" aria-label="Kontak Rumah Sakit">
+        <h3>Kontak Rumah Sakit Abdul Moeloek</h3>
+        <p>Alamat: Jalan Dr. Rivai, No.06, Penengahan, Kec. Tanjungkarang Pusat, Kota Bandar Lampung, Lampung</p>
+        <p>Telepon: (0721) 703312, 702455</p>
+        <p>Email: humasrsudam23@gmail.com / rsudam@lampungprov.go.id</p>
+        <p>Website: <a href="https://www.rsabdulmoeloek.co.id" target="_blank" rel="noopener" style="color: white;">www.rsabdulmoeloek.co.id</a></p>
+    </footer>
+
+    <script>
+      (function () {
+        const list = document.getElementById('scheduleList');
+        const items = Array.from(list.querySelectorAll('.timeline-item'));
+        const search = document.getElementById('search');
+        const chips = Array.from(document.querySelectorAll('.chip'));
+        const todayOnly = document.getElementById('todayOnly');
+        const stats = document.querySelector('.stats');
+        const emptyState = document.getElementById('emptyState');
+
+        const total = items.length;
+
+        function getTodaySlug() {
+          const map = ['minggu', 'senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu'];
+          return map[new Date().getDay()];
+        }
+
+        function setActiveChipByDay(day) {
+          chips.forEach(btn => {
+            const isActive = btn.dataset.day === day;
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-selected', String(isActive));
+          });
+        }
+
+        function currentActiveDay() {
+          const active = chips.find(btn => btn.classList.contains('active'));
+          return active ? active.dataset.day : 'all';
+        }
+
+        function update() {
+          const q = (search.value || '').trim().toLowerCase();
+          let day = currentActiveDay();
+          if (todayOnly.checked) day = getTodaySlug();
+
+          let visible = 0;
+          items.forEach(it => {
+            const nama = (it.dataset.dokter || '').toLowerCase();
+            const poli = (it.dataset.poliklinik || '').toLowerCase();
+            const hari = (it.dataset.hari || '').split(',').map(s => s.trim());
+
+            const matchText = !q || nama.includes(q) || poli.includes(q);
+            const matchDay = day === 'all' || hari.includes(day);
+
+            const show = matchText && matchDay;
+            it.style.display = show ? '' : 'none';
+            if (show) visible++;
+          });
+
+          stats.textContent = `Menampilkan ${visible} dari ${total} dokter`;
+          emptyState.style.display = visible === 0 ? 'block' : 'none';
+        }
+
+        // Inisialisasi
+        stats.textContent = `Menampilkan ${total} dari ${total} dokter`;
+        setActiveChipByDay('all');
+        update();
+
+        // Event listeners
+        search.addEventListener('input', update);
+        todayOnly.addEventListener('change', () => {
+          if (todayOnly.checked) {
+            // Bila "hari ini saja" diaktifkan, nonaktifkan semua chip visual
+            chips.forEach(btn => {
+              btn.classList.remove('active');
+              btn.setAttribute('aria-selected', 'false');
+            });
+          } else {
+           
+            if (!chips.some(btn => btn.classList.contains('active'))) {
+              setActiveChipByDay('all');
+            }
+          }
+          update();
+        });
+
+        chips.forEach(btn => {
+          btn.addEventListener('click', () => {
+            todayOnly.checked = false;
+            chips.forEach(b => {
+              b.classList.remove('active');
+              b.setAttribute('aria-selected', 'false');
+            });
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
+            update();
+          });
+        });
+      })();
+    </script>
+
+</body>
+</html>

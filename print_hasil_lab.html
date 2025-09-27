@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cetak Hasil Lab</title>
+    <style>
+      @page { size: A4; margin: 18mm; }
+      :root {
+        --text: #111;
+        --muted: #555;
+        --border: #000;
+        --hint: #888;
+        --accent-bg: #f2f2f2;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12pt;
+        background: #fff;
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        border-bottom: 1px solid #eee;
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 999;
+      }
+      .toolbar .note {
+        font-size: 10pt;
+        color: var(--hint);
+      }
+      .toolbar .actions {
+        display: flex;
+        gap: 8px;
+      }
+      .toolbar button {
+        padding: 8px 12px;
+        font-size: 10pt;
+        border: 1px solid #ccc;
+        background: #fafafa;
+        cursor: pointer;
+        border-radius: 6px;
+      }
+      .toolbar button:hover { background: #f0f0f0; }
+
+      .container { padding: 0; }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8mm;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--border);
+        margin-bottom: 16px;
+      }
+      .logo {
+        width: 28mm; /* ensure logo at top-left with consistent physical size */
+        height: auto;
+      }
+      .header-text {
+        flex: 1 1 auto;
+        text-align: center;
+        margin-left: 6mm; /* shift header a bit to the right as requested */
+      }
+      .header-text h1 {
+        font-size: 16pt;
+        margin: 0;
+        line-height: 1.2;
+      }
+      .header-text p {
+        margin: 2px 0;
+        font-size: 10pt;
+        color: var(--muted);
+      }
+      .spacer { width: 28mm; } /* balance the logo width */
+
+      .title {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14pt;
+        margin: 14px 0 10px;
+      }
+
+      .section { margin: 8px 0 14px; }
+      .data-pasien table { width: 100%; border-collapse: collapse; }
+      .data-pasien td {
+        padding: 3px 0;
+        vertical-align: top;
+      }
+      .data-pasien td:first-child { width: 42mm; }
+      .editable {
+        border-bottom: 1px dashed #bbb; /* visual affordance for editability */
+        padding: 0 2px;
+      }
+
+      table.lab-results {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table.lab-results th, table.lab-results td {
+        border: 1px solid var(--border);
+        padding: 6px 8px;
+        font-size: 11pt;
+      }
+      table.lab-results th {
+        background: var(--accent-bg);
+        text-align: center;
+        font-weight: bold;
+      }
+      table.lab-results td:nth-child(2),
+      table.lab-results td:nth-child(3) {
+        text-align: center;
+      }
+
+      .signature-area {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 28mm;
+      }
+      .signature-block {
+        width: 70mm;
+        text-align: center;
+        line-height: 1.6;
+      }
+      .signature-space {
+        height: 25mm; /* provide clear space for signature */
+      }
+      .signature-name {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+      .signature-meta { margin-top: 2px; }
+
+      @media print {
+        .toolbar { display: none !important; }
+        body { background: #fff; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar no-print">
+      <div class="note">Anda dapat mengubah identitas pasien (bidang bergaris) sebelum mencetak.</div>
+      <div class="actions">
+        <button id="printBtn" onclick="window.print()">Cetak Sekarang</button>
+        <button onclick="window.close()">Tutup</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="header">
+        <img src="logorsudam.jpg" alt="Logo Rumah Sakit" class="logo" />
+        <div class="header-text">
+          <h1>LABORATORIUM RUMAH SAKIT ABDUL MOELOEK</h1>
+          <p>Jalan DR. Rivai, No.06, Penengahan, Kec. Tanjungkarang Pusat, Kota Bandar Lampung, Lampung 35112</p>
+          <p>No. Izin: HK. 02.02/1/1878/2019</p>
+          <p>No. telp. (0721) 703312, 702455 | Email: humasrsudam23@gmail.com / rsudam@lampungprov.go.id</p>
+        </div>
+        <div class="spacer" aria-hidden="true"></div>
+      </div>
+
+      <div class="title">Hasil Pemeriksaan Laboratorium</div>
+
+      <section class="section data-pasien" aria-label="Data Pasien">
+        <table>
+          <tr><td>Nama</td><td>: <span id="f_nama" class="editable" contenteditable="true">-</span></td></tr>
+          <tr><td>Umur</td><td>: <span id="f_umur" class="editable" contenteditable="true">-</span></td></tr>
+          <tr><td>Jenis Kelamin</td><td>: <span id="f_jk" class="editable" contenteditable="true">-</span></td></tr>
+          <tr><td>Tanggal Periksa</td><td>: <span id="f_tgl" class="editable" contenteditable="true">-</span></td></tr>
+          <tr><td>Alamat</td><td>: <span id="f_alamat" class="editable" contenteditable="true">-</span></td></tr>
+          <tr><td>Diagnosa</td><td>: <span id="f_diagnosa" class="editable" contenteditable="true">-</span></td></tr>
+          <tr><td>Dokter Pengirim</td><td>: <span id="f_dokter" class="editable" contenteditable="true">-</span></td></tr>
+        </table>
+      </section>
+
+      <section class="section">
+        <table class="lab-results" aria-label="Tabel Hasil Pemeriksaan">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Hasil</th>
+              <th>Satuan</th>
+              <th>Nilai Normal</th>
+            </tr>
+          </thead>
+          <tbody id="labRows">
+             populated by JS 
+          </tbody>
+        </table>
+      </section>
+
+      <section class="signature-area" aria-label="Tanda Tangan Penanggung Jawab">
+        <div class="signature-block">
+          <div>Penanggung Jawab</div>
+          <div class="signature-space"></div>
+          <div class="signature-name" id="sig_name">Kahiyang Ayu S.Tr. Kes</div>
+          <div class="signature-meta" id="sig_nip">NIP. 1101000199008</div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      function getParam(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+      }
+      function safeParse(json) {
+        try { return JSON.parse(json || 'null') } catch { return null }
+      }
+      function getLabById(id) {
+        const arr = safeParse(localStorage.getItem('labList')) || [];
+        return arr.find(d => String(d.id) === String(id)) || null;
+      }
+      function getPasienList() {
+        return safeParse(localStorage.getItem('pasienList')) || [];
+      }
+      function getPasienById(id) {
+        const list = getPasienList();
+        return list.find(p => String(p.id) === String(id)) || null;
+      }
+      function setText(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val ?? '-';
+      }
+
+      (function init() {
+        const id = getParam('id');
+        if (!id) {
+          alert('ID hasil lab tidak ditemukan.');
+          return;
+        }
+        const data = getLabById(id);
+        if (!data) {
+          alert('Data hasil lab tidak ditemukan.');
+          return;
+        }
+
+        const pasien = data.patient_id ? getPasienById(data.patient_id) : null;
+        const pasienData = pasien ? {
+          nama: pasien.nama,
+          umur: pasien.umur ? (pasien.umur + ' Tahun') : '-',
+          jenisKelamin: pasien.jekel === 'L' ? 'Laki-Laki' : (pasien.jekel === 'P' ? 'Perempuan' : '-'),
+          tanggalPeriksa: pasien.tanggal || '-',
+          alamat: pasien.alamat || '-',
+          diagnosa: pasien.diagnosa || '-',
+          dokterPengirim: pasien.dokter_pengirim || '-',
+        } : {
+          nama: '(Belum tertaut)',
+          umur: '-',
+          jenisKelamin: '-',
+          tanggalPeriksa: '-',
+          alamat: '-',
+          diagnosa: '-',
+          dokterPengirim: '-',
+        };
+
+        setText('f_nama', pasienData.nama);
+        setText('f_umur', pasienData.umur);
+        setText('f_jk', pasienData.jenisKelamin);
+        setText('f_tgl', pasienData.tanggalPeriksa);
+        setText('f_alamat', pasienData.alamat);
+        setText('f_diagnosa', pasienData.diagnosa);
+        setText('f_dokter', pasienData.dokterPengirim);
+
+        const rows = [
+          ['Hemoglobin', data.hemoglobin, 'g/dL', 'L: 12,6–17,4; P: 11,7–16,1'],
+          ['Hematokrit', data.hematokrit, '%', 'L: 36–52; P: 34–64'],
+          ['Leukosit', data.leukosit, '/µL', '4.500–10.500'],
+          ['Eritrosit', data.eritrosit, '/µL', 'L: 4,7–6,1 jt; P: 4,2–5,4 jt'],
+          ['Trombosit', data.trombosit, '/µL', '150.000–450.000'],
+          ['MCV', data.mcv, 'fL', '80–100'],
+          ['MCH', data.mch, 'pg', '27–32'],
+          ['MCHC', data.mchc, 'g/dL', '32–36'],
+          ['Protrombin (PT)', data.protrombin_pt, 'detik', '12,0–15,0'],
+          ['INR', data.inr, '-', '0,8–1,2'],
+          ['APTT', data.aptt, 'detik', '25,0–35,0'],
+          ['D-Dimer', data.d_dimer, 'ng/mL', '< 500'],
+        ];
+
+        const tbody = document.getElementById('labRows');
+        rows.forEach(([name, value, unit, normal]) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${name}</td>
+            <td contenteditable="true" class="editable">${value ?? '-'}</td>
+            <td>${unit}</td>
+            <td>${normal}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })();
+    </script>
+  </body>
+</html>
